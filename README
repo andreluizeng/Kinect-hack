@@ -1,0 +1,91 @@
+INTRODUCTION
+------------
+
+Kinect is a motion sensing input device by Microsoft for the Xbox 360 video game console and Windows PCs. 
+Based around a webcam-style add-on peripheral for the Xbox 360 console, it enables users to control and interact with the 
+Xbox 360 without the need to touch a game controller, through a natural user interface using gestures commands.  (wikipedia)
+
+This repository holds source codes of various demos regarding the Kinect usage for computer vision based application on Freescale's i.MX6 Processors.
+
+all demos requires the following dependences:
+
+1 - OpenCV
+2 - OpenKinect
+3 - Gstreamer
+4 - OpenGL ES 2.0
+
+
+
+DEMOS
+-----
+
+1 - Kinect-Simple  - Just output the RGB and depth image as textures for 2 GL planes  - (DONE)
+2 - Hand-Detection - Performs hand detection with dynamic background segmentation - (ON GOING)
+
+
+
+BUILDING
+--------
+
+1 - get into ltib shell: ./ltib -m shell
+2 - make
+
+the following makefile can be used as an example for building the demos apps.
+
+------------------------------------------------------------
+APPNAME			= kinect_hand_detection
+DESTDIR			= ../bin
+
+CC = gcc
+LD = g++
+
+DEL_FILE		= rm -rf
+CP_FILE			= cp -rf      
+
+
+CFLAGS			= -Wall -O2 -fsigned-char -march=armv7-a -mfpu=neon -mfloat-abi=softfp \
+                                -I. -I../usr/include \
+
+LFLAGS			= -L../lib -lEGL -lGLESv2 -lpthread \
+			-lcxcore -lcv -lcvaux -lhighgui -lml \
+			-L/usr/lib \
+			-lusb-1.0 -lfreenect \
+
+
+OBJECTS			= main.o glutils.o glcvplane.o 
+
+
+first: all
+
+all: $(APPNAME)
+
+$(APPNAME): $(OBJECTS)
+	$(LD) $(LFLAGS) -o $(DESTDIR)/$(APPNAME) $(OBJECTS)
+
+main.o: main.cpp
+	$(LD) $(CFLAGS) -c -o main.o main.cpp
+
+glutils.o: glutils.cpp
+	$(LD) $(CFLAGS) -c -o glutils.o glutils.cpp
+
+glcvplane.o: glcvplane.cpp
+	$(LD) $(CFLAGS) -c -o glcvplane.o glcvplane.cpp
+
+clean:
+	$(DEL_FILE) $(OBJECTS)
+	$(DEL_FILE) *~ core *.core
+
+distclean: clean
+	$(DEL_FILE) $(DESTDIR)/$(APPNAME)
+
+
+install: all
+------------------------------------------------------------
+
+AUTHOR:
+-------
+
+Andre Silva
+andreluizeng@yahoo.com.br
+andre.silva@freescale.com
+www.imxcv.blogspot.com
