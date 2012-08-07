@@ -394,9 +394,9 @@ void GLCVPlane::PlaneReset (void)
 //--------------------------------------------------------------------------------------
 void GLCVPlane::PlaneSetTex (IplImage *texture_data)
 {
-	cvCvtColor (texture_data, _texture_data, CV_BGR2RGB);
+	//cvCvtColor (texture_data, _texture_data, CV_BGR2RGB);
 	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, _texture_w, _texture_h, 0, GL_RGB, GL_UNSIGNED_BYTE, _texture_data->imageData);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, texture_data->width, texture_data->height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_data->imageData);
 	//glTexDirectVIV (GL_TEXTURE_2D, _texture_w, _texture_h, GL_VIV_YV12, (void **)_texture_data->imageData);
 }
 
